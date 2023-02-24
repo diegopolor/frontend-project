@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    --scrollbarBG: #CFD8DC;
+    --thumbBG: #a0a0a0;
+    scroll-behavior: smooth;
+    transition: all ease-in 50ms;
+}
+
+*::-webkit-scrollbar {
+    width: 10px;
+}
+  
+*{
+    scrollbar-width: thin;
+    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+
+*::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: var(--scrollbarBG);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBG) ;
+  border-radius: 6px;
+  border: 2px solid var(--scrollbarBG);
+}
+
+ /*  Se aplica en los estilos del tab dinamico  */
+.dark div[class="z-20"] ~ div {
+    background-color: #3e3e3e;
+}
