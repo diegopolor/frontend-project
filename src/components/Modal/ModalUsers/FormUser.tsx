@@ -3,7 +3,9 @@ import {
     Select,
     Option,
 } from '@material-tailwind/react'
+
 import { useState } from 'react'
+import configApp from '../../../config/config'
 import { User } from '../../../types'
 import SectionBTNUsersCrud from './SectionBTNUsersCrud'
 
@@ -21,6 +23,7 @@ interface Props {
 const FormUser = ({ userSelected, setUserSelected, id, handlerGetUsers, rol, setRol, user, setUser  }: Props)=> {
 
     const [ pass, setPass ] = useState<string | undefined>(undefined)
+    const { roles } = configApp
 
     const handlerUser = (e: React.ChangeEvent<HTMLInputElement>)=> setUser(e.target.value)
     const handlerPass = (e: React.ChangeEvent<HTMLInputElement>)=> setPass(e.target.value)
@@ -46,9 +49,9 @@ const FormUser = ({ userSelected, setUserSelected, id, handlerGetUsers, rol, set
                     label="Rol"
                     onChange={(valor)=> handlerRol(valor)}
                 >
-                    <Option value='CMO'>CMO</Option>
-                    <Option value='Mantenimiento'>Mantenimiento</Option>
-                    <Option value='Admin'>Admin</Option>
+                    {roles.map(rol => (
+                        <Option value={rol}>{rol}</Option>
+                    ))}
                 </Select>
             </div>
             <div className='mt-5 w-1/3'>

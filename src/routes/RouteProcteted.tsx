@@ -10,19 +10,13 @@ const RouteProtected = ({ children }: Props)=> {
     
     useEffect(()=> {
         const session = localStorage?.session !== undefined ? localStorage.session : 'false'
-        console.log(session)
-        const tokenSession = localStorage?.sessionID !== undefined
-        console.log(tokenSession);
-        console.log(session !== 'true' && tokenSession);
-        
+        const tokenSession = localStorage?.sessionID !== undefined       
         if(session !== 'true' && !tokenSession) navigate('/login') 
     }, [])// eslint-disable-line
    
-    return(
-        <>
-            {children}
-        </>
-    )
+    const isAuthenticated = localStorage.session === 'true' || localStorage.sessionID !== undefined
+
+    return isAuthenticated ? <>{children}</> : null
 }
 
 export default RouteProtected

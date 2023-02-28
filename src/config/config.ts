@@ -9,3 +9,5 @@ const configApp =  {
 }
 
 export default configApp
+
+

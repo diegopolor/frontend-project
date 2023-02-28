@@ -4,26 +4,20 @@ const BaseURI = `${uriApi}/api/v1`
 
 
 export const requestApi = async(url: string, method: string, body?: object) =>{
-    const sessionID = localStorage.sessionID || ' '
-    const username = localStorage.username || ' '
-    const rol = localStorage.room || ' '
-    let params = { }
-    let fetchParams = {
+    const sessionID =  localStorage.getItem ('sessionID') || ' '
+    const username =  localStorage.getItem('username') || ' '
+    const rol =  localStorage.getItem('room') || ' '
+    let fetchParams = { 
         method,
         headers : { 
             rol,
             username,   
             'Content-Type': 'application/json',
             'Authorization' : `Token ${sessionID}`
-        }
+        }, 
+        body: method !== 'GET' ? JSON.stringify(body): undefined
     }
 
-    if(method !== 'GET'){
-        params = {
-            ...fetchParams, 
-            body: JSON.stringify(body)
-        }
-    }
-    const result = await fetch(BaseURI + url, params) 
+    const result = await fetch (`${BaseURI}${url}`, fetchParams) 
     return result
 }

@@ -19,14 +19,15 @@ interface dataFilter {
 }
 
 const FilterItems = ({ setItems }: Props)=> {
-    const { cantUnidades } =  configApp
+    const { cantUnidades, roles } =  configApp
 
     const [ fechaInicial, setFechaInicial ] = useState<string | undefined>(undefined)
     const [ fechaFinal, setFechaFinal] = useState<string  | undefined>(undefined)
     const [ unidad , setUnidad] = useState<string | undefined | undefined>(undefined)
     const [ destinatario , setDestinatario] = useState<string | undefined>(undefined)
 
-    const isAdmin = localStorage.room === 'Admin'
+    
+    const isAdmin = localStorage.getItem('room') === 'Admin'
 
     const dateValidate = (fInicial: string | undefined, fFinal: string | undefined)=>{
         if(fInicial && !fFinal) throw Error('No se ha seleccionado la fecha final')
@@ -58,7 +59,8 @@ const FilterItems = ({ setItems }: Props)=> {
                 return 0
             }) 
             
-            if(Object.keys(dataSend).length > 0){
+            const validFilter = isAdmin ? Object.keys(dataSend).length > 0: Object.keys(dataSend).length > 1
+            if(validFilter){
                 const { success, data } = await getNovFilterHistorico(dataSend)
                 if(success) setItems(data)
                 else alert('No se pudo mostrar la inforamción')
@@ -109,11 +111,12 @@ const FilterItems = ({ setItems }: Props)=> {
                     label="Destinatario"
                     onChange={(e)=> setDestinatario(e)}
                 >
-                    <Option value="CMO">CMO</Option>
-                    <Option value="Mantenimiento">Mantenimiento</Option>
+                    {roles.filter(rol => rol !== "Admin").map(
+                        ( rol => ( 
+                        <Option key={rol} value={rol}>{rol}</Option>))
+                    )}
                 </Select>
             }    
-
             <Select 
                 value={unidad}
                 className="dark:text-white" 

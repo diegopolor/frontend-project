@@ -16,30 +16,26 @@ function NovedadesTabs() {
 
   // realiza una peticion filtrandola por numero de prioridad y se asigna el valor dependiendo del numero de prioridad
   const handlerGetNovedad = (prioridad: number) => {
-    const stateHandler = prioridad === 1 ? setPrioridad1 : setPrioridad2
+    const stateHandler = prioridad === 1 ? setPrioridad1 : setPrioridad2;
+    
     getNovPerPrioridad(prioridad)
     .then(({ data }) => {
       stateHandler(data)
     }).catch(()=> console.error('error'))
-    getNovHistorico().then(({ data, success })=> {
-      setHistorico(data)
-      !success && 
-        alert('Ha ocurrido un error en la petición, cierra sesión y vuelva ingresar para solucionarlo.') 
-     })
   }
 
   useEffect(()=> {
     handlerGetNovedad(1)
     handlerGetNovedad(2)
+    getNovHistorico().then(({ data, success })=> {  
+      setHistorico(data)
+      !success && 
+        alert('Ha ocurrido un error en la petición, cierra sesión y vuelva ingresar para solucionarlo.') 
+     })
     
     socket.on('novedades', ()=>{ 
-      console.log('aaaa')
-      setTimeout(()=> {
         handlerGetNovedad(1)
-      }, 2000)
-      setTimeout(()=> {
         handlerGetNovedad(2)
-      }, 4000)
     })
     socket.on('doneNovedad', ()=>{
       getNovHistorico().then(({ data })=> {
